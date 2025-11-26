@@ -5,17 +5,34 @@ import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
+/**
+ * Main Rendering Window
+ * 
+ * A Swing-based window that renders drawable shapes using Java AWT Graphics.
+ * Supports rendering Points, Lines, Circles, Rectangles, Triangles, and
+ * Hexagons.
+ * 
+ * @author University Assignment
+ * @version 1.0
+ */
 public class MainWindow extends JFrame {
 
-	// data
+	// Data members
 	private ArrayList<Drawable> drawable;
 
-	// constructor
+	/**
+	 * Constructs a new MainWindow.
+	 */
 	public MainWindow() {
 		super();
 	}
 
-	// functions
+	/**
+	 * Paints all drawable shapes on the window.
+	 * Uses instanceof checks to determine shape type and render appropriately.
+	 * 
+	 * @param g Graphics context for rendering
+	 */
 	@Override
 	public void paint(Graphics g) {
 
@@ -23,11 +40,13 @@ public class MainWindow extends JFrame {
 
 		for (int i = 0; i < drawable.size(); i++) {
 
+			// Render Points
 			if (drawable.get(i) instanceof Point) {
 				Point p = (Point) drawable.get(i);
 				g.drawOval(p.getX(), p.getY(), 3, 3);
 			}
 
+			// Render Lines
 			if (drawable.get(i) instanceof Line) {
 				Line l = (Line) drawable.get(i);
 
@@ -36,6 +55,7 @@ public class MainWindow extends JFrame {
 						l.getP1().getX(), l.getP1().getY());
 			}
 
+			// Render Circles
 			if (drawable.get(i) instanceof Circle) {
 				Circle c = (Circle) drawable.get(i);
 
@@ -53,6 +73,7 @@ public class MainWindow extends JFrame {
 
 			}
 
+			// Render Triangles
 			if (drawable.get(i) instanceof Triangle) {
 				Triangle t = (Triangle) drawable.get(i);
 
@@ -66,18 +87,20 @@ public class MainWindow extends JFrame {
 
 			}
 
+			// Render Rectangles
 			if (drawable.get(i) instanceof Rectangle) {
 				Rectangle r = (Rectangle) drawable.get(i);
 				g.setColor(r.getColor());
 				if (r.getFill()) {
-					g.fillRect(r.getx(), r.gety(), r.getw(), r.geth());
+					g.fillRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
 
 				} else {
-					g.drawRect(r.getx(), r.gety(), r.getw(), r.geth());
+					g.drawRect(r.getX(), r.getY(), r.getWidth(), r.getHeight());
 				}
 
 			}
 
+			// Render Hexagons
 			if (drawable.get(i) instanceof Hexagon) {
 				Hexagon h = (Hexagon) drawable.get(i);
 				g.setColor(h.getColor());
@@ -92,6 +115,11 @@ public class MainWindow extends JFrame {
 
 	}
 
+	/**
+	 * Sets the list of shapes to be drawn and triggers a repaint.
+	 * 
+	 * @param drawable ArrayList of Drawable shapes to render
+	 */
 	public void setDraws(ArrayList<Drawable> drawable) {
 		this.drawable = drawable;
 		this.repaint();

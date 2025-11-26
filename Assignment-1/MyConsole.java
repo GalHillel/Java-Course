@@ -1,4 +1,4 @@
-package lesson_1;
+package ex1;
 
 
 

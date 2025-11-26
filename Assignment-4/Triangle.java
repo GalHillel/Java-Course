@@ -2,41 +2,70 @@ package main;
 
 import java.awt.Color;
 
+/**
+ * Triangle Shape
+ * 
+ * Represents a triangle defined by three vertices.
+ * Implements both Drawable and Saveable interfaces.
+ * 
+ * @author University Assignment
+ * @version 1.0
+ */
 public class Triangle implements Drawable, Saveable {
 
-	// data
-	private Point p0, p1, p2;
+	// Data members
+	private Point vertex0;
+	private Point vertex1;
+	private Point vertex2;
 	private Color color;
 	private boolean fill;
 
-	// constructor
-	public Triangle(Point p0, Point p1, Point p2, Color color, boolean fill) {
-		this.p0 = p0;
-		this.p1 = p1;
-		this.p2 = p2;
+	/**
+	 * Constructs a Triangle with three vertices.
+	 * 
+	 * @param vertex0 First vertex of the triangle
+	 * @param vertex1 Second vertex of the triangle
+	 * @param vertex2 Third vertex of the triangle
+	 * @param color   Color of the triangle
+	 * @param fill    Whether the triangle should be filled or just outlined
+	 */
+	public Triangle(Point vertex0, Point vertex1, Point vertex2, Color color, boolean fill) {
+		this.vertex0 = vertex0;
+		this.vertex1 = vertex1;
+		this.vertex2 = vertex2;
 		this.color = color;
 		this.fill = fill;
 	}
 
-	// functions
+	@Override
 	public Color getColor() {
 		return color;
 	}
 
+	/**
+	 * Gets the X coordinates of all three vertices.
+	 * 
+	 * @return Array of 3 X coordinates
+	 */
 	public int[] getXs() {
-		int[] ans = new int[3];
-		ans[0] = p0.getX();
-		ans[1] = p1.getX();
-		ans[2] = p2.getX();
-		return ans;
+		int[] xCoordinates = new int[3];
+		xCoordinates[0] = vertex0.getX();
+		xCoordinates[1] = vertex1.getX();
+		xCoordinates[2] = vertex2.getX();
+		return xCoordinates;
 	}
 
+	/**
+	 * Gets the Y coordinates of all three vertices.
+	 * 
+	 * @return Array of 3 Y coordinates
+	 */
 	public int[] getYs() {
-		int[] ans = new int[3];
-		ans[0] = p0.getY();
-		ans[1] = p1.getY();
-		ans[2] = p2.getY();
-		return ans;
+		int[] yCoordinates = new int[3];
+		yCoordinates[0] = vertex0.getY();
+		yCoordinates[1] = vertex1.getY();
+		yCoordinates[2] = vertex2.getY();
+		return yCoordinates;
 	}
 
 	@Override
@@ -44,38 +73,60 @@ public class Triangle implements Drawable, Saveable {
 		return fill;
 	}
 
+	/**
+	 * Calculates the area using the cross product formula.
+	 * 
+	 * The formula is: Area = |(v1-v0) × (v2-v0)| / 2
+	 * Simplified to: |x1*y2 - x2*y1 + x2*y0 - x0*y2 + x0*y1 - x1*y0|
+	 * 
+	 * @return Area of the triangle in square pixels
+	 */
 	@Override
 	public double getArea() {
-		// Area =|(p1-p0)X(p2-p0)|
-		return Math.abs(
-				(p1.getX() - p0.getX()) * (p2.getY() - p0.getY()) - (p2.getX() - p0.getX()) * (p1.getY() - p0.getY()));
+		return Math.abs((vertex1.getX() - vertex0.getX()) * (vertex2.getY() - vertex0.getY())
+				- (vertex2.getX() - vertex0.getX()) * (vertex1.getY() - vertex0.getY()));
 	}
 
-	private double getDistance(Point p1, Point p2) {
-		return Math.sqrt(Math.pow(p1.getY() - p2.getY(), 2) + Math.pow(p1.getX() - p2.getX(), 2));
+	/**
+	 * Calculates Euclidean distance between two points.
+	 * Uses the formula: √((x2-x1)² + (y2-y1)²)
+	 * 
+	 * @param point1 First point
+	 * @param point2 Second point
+	 * @return Distance between the two points
+	 */
+	private double getDistance(Point point1, Point point2) {
+		return Math.sqrt(Math.pow(point1.getY() - point2.getY(), 2)
+				+ Math.pow(point1.getX() - point2.getX(), 2));
 	}
 
+	/**
+	 * Calculates the perimeter as the sum of all three side lengths.
+	 * 
+	 * @return Perimeter of the triangle in pixels
+	 */
+	@Override
 	public double getPerimeter() {
-		return getDistance(p0, p1) + getDistance(p1, p2) + getDistance(p2, p0);
+		return getDistance(vertex0, vertex1) + getDistance(vertex1, vertex2) + getDistance(vertex2, vertex0);
 	}
 
 	@Override
 	public String getFileText() {
-		return "Triangle*" + p0.getFileText() + "*" + p1.getFileText() + "*" + p2.getFileText() + "*"
-				+ Main.translateColor(color) + "*" + fill;
+		return "Triangle*" + vertex0.getFileText() + "*" + vertex1.getFileText() + "*"
+				+ vertex2.getFileText() + "*" + Main.translateColor(color) + "*" + fill;
 	}
 
 	@Override
 	public void loadFileText(String data) {
-		String[] point = data.split("\\*");
-		this.p0 = new Point(Integer.parseInt(point[1]), Integer.parseInt(point[2]), Main.translateColor(point[3]),
-				Boolean.parseBoolean(point[4]));
-		this.p1 = new Point(Integer.parseInt(point[5]), Integer.parseInt(point[6]), Main.translateColor(point[7]),
-				Boolean.parseBoolean(point[8]));
-		this.p2 = new Point(Integer.parseInt(point[9]), Integer.parseInt(point[10]), Main.translateColor(point[11]),
-				Boolean.parseBoolean(point[12]));
-		this.color = Main.translateColor(point[13]);
-		this.fill = Boolean.parseBoolean(point[14]);
+		String[] triangleData = data.split("\\*");
+		this.vertex0 = new Point(Integer.parseInt(triangleData[1]), Integer.parseInt(triangleData[2]),
+				Main.translateColor(triangleData[3]), Boolean.parseBoolean(triangleData[4]));
+		this.vertex1 = new Point(Integer.parseInt(triangleData[5]), Integer.parseInt(triangleData[6]),
+				Main.translateColor(triangleData[7]), Boolean.parseBoolean(triangleData[8]));
+		this.vertex2 = new Point(Integer.parseInt(triangleData[9]), Integer.parseInt(triangleData[10]),
+				Main.translateColor(triangleData[11]), Boolean.parseBoolean(triangleData[12]));
+		this.color = Main.translateColor(triangleData[13]);
+		this.fill = Boolean.parseBoolean(triangleData[14]);
 	}
 
 }

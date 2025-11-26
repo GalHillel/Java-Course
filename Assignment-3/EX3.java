@@ -2,74 +2,121 @@ package EX3;
 
 import java.util.ArrayList;
 
+/**
+ * Assignment 3: String Processing and Rational Numbers
+ * 
+ * This class provides string processing utilities for:
+ * - Parsing sentences into word arrays
+ * - Building sorted dictionaries of unique words from text
+ * 
+ * @author University Assignment
+ * @version 1.0
+ */
 public class EX3 {
 
-	// Solution 1
-	public static String[] sentence(String S) {
-		ArrayList<String> Words = new ArrayList<String>();
-		String NewS = "";
-		for (int j = 0; j < S.length(); j++) {
-			if (S.charAt(j) != ' ' && S.charAt(j) != '.' && S.charAt(j) != ',') {
-				NewS += S.charAt(j);
+	/**
+	 * Parses a sentence into an array of words.
+	 * 
+	 * Splits the input string on spaces, periods, and commas,
+	 * extracting individual words while preserving their original case.
+	 * 
+	 * @param sentence Input string to parse
+	 * @return Array of words extracted from the sentence
+	 */
+	public static String[] sentence(String sentence) {
+		ArrayList<String> words = new ArrayList<String>();
+		String currentWord = "";
+
+		// Extract words by splitting on delimiters
+		for (int index = 0; index < sentence.length(); index++) {
+			char character = sentence.charAt(index);
+			if (character != ' ' && character != '.' && character != ',') {
+				currentWord += character;
 			} else {
-				if (NewS.length() > 0) {
-					Words.add(NewS);
-					NewS = "";
+				if (currentWord.length() > 0) {
+					words.add(currentWord);
+					currentWord = "";
 				}
 			}
 		}
-		Words.add(NewS);
-		String[] sen = new String[Words.size()];
-		for (int i = 0; i < Words.size(); i++) {
-			sen[i] = Words.get(i);
+
+		// Add the last word if present
+		words.add(currentWord);
+
+		// Convert ArrayList to array
+		String[] wordArray = new String[words.size()];
+		for (int i = 0; i < words.size(); i++) {
+			wordArray[i] = words.get(i);
 		}
-		return sen;
+		return wordArray;
 	}
 
-	// Solution 2
-	public static String[] dictionary(String s) {
-		ArrayList<String> D = new ArrayList<String>();
-		ArrayList<String> A = new ArrayList<String>();
-		String temp = "";
-		for (int j = 0; j < s.length(); j++) {
-			if (s.charAt(j) != ' ' && s.charAt(j) != '.' && s.charAt(j) != ',') {
-				temp += s.charAt(j);
-				temp = temp.toLowerCase();
-			} else {
-				if (temp.length() > 0) {
-					D.add(temp);
-					temp = "";
-				}
-			}
-		}
-		D.add(temp);
-		String[] Dictionary = new String[D.size()];
-		for (int i = 0; i < D.size(); i++) {
-			Dictionary[i] = D.get(i);
-		}
-		for (int i = 0; i < Dictionary.length - 1; i++) {
-			for (int j = i + 1; j < Dictionary.length; j++) {
-				if (Dictionary[i].compareTo(Dictionary[j]) > 0) {
-					temp = Dictionary[i];
-					Dictionary[i] = Dictionary[j];
-					Dictionary[j] = temp;
-				}
-			}
-		}
-		A.add(Dictionary[0]);
-		for (int i = 1; i < Dictionary.length - 1; i++) {
-			if (Dictionary[i].compareTo(Dictionary[i + 1]) != 0 && Dictionary[i].compareTo(Dictionary[i - 1]) != 0) {
-				A.add(Dictionary[i]);
-			}
-			if (i == Dictionary.length - 2) {
-				A.add(Dictionary[i + 1]);
-			}
-		}
-		String[] B = new String[A.size()];
-		for (int i = 0; i < A.size(); i++) {
-			B[i] = A.get(i);
-		}
-		return B;
-	}
+	/**
+	 * Builds a sorted dictionary of unique words from a text string.
+	 * 
+	 * This method:
+	 * 1. Extracts words from the input (splitting on spaces, periods, commas)
+	 * 2. Converts all words to lowercase
+	 * 3. Sorts words alphabetically
+	 * 4. Removes duplicates
+	 * 
+	 * @param text Input string to process
+	 * @return Sorted array of unique lowercase words
+	 */
+	public static String[] dictionary(String text) {
+		ArrayList<String> allWords = new ArrayList<String>();
+		ArrayList<String> uniqueWords = new ArrayList<String>();
+		String currentWord = "";
 
+		// Extract and lowercase all words
+		for (int index = 0; index < text.length(); index++) {
+			char character = text.charAt(index);
+			if (character != ' ' && character != '.' && character != ',') {
+				currentWord += character;
+				currentWord = currentWord.toLowerCase();
+			} else {
+				if (currentWord.length() > 0) {
+					allWords.add(currentWord);
+					currentWord = "";
+				}
+			}
+		}
+		allWords.add(currentWord);
+
+		// Convert to array for sorting
+		String[] sortedWords = new String[allWords.size()];
+		for (int i = 0; i < allWords.size(); i++) {
+			sortedWords[i] = allWords.get(i);
+		}
+
+		// Bubble sort alphabetically
+		for (int i = 0; i < sortedWords.length - 1; i++) {
+			for (int j = i + 1; j < sortedWords.length; j++) {
+				if (sortedWords[i].compareTo(sortedWords[j]) > 0) {
+					String temp = sortedWords[i];
+					sortedWords[i] = sortedWords[j];
+					sortedWords[j] = temp;
+				}
+			}
+		}
+
+		// Remove duplicates
+		uniqueWords.add(sortedWords[0]);
+		for (int i = 1; i < sortedWords.length - 1; i++) {
+			if (sortedWords[i].compareTo(sortedWords[i + 1]) != 0 &&
+					sortedWords[i].compareTo(sortedWords[i - 1]) != 0) {
+				uniqueWords.add(sortedWords[i]);
+			}
+			if (i == sortedWords.length - 2) {
+				uniqueWords.add(sortedWords[i + 1]);
+			}
+		}
+
+		// Convert unique words to array
+		String[] uniqueWordArray = new String[uniqueWords.size()];
+		for (int i = 0; i < uniqueWords.size(); i++) {
+			uniqueWordArray[i] = uniqueWords.get(i);
+		}
+		return uniqueWordArray;
+	}
 }

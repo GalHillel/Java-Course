@@ -1,50 +1,108 @@
 package EX3;
 
+/**
+ * Rational Number Representation
+ * 
+ * This class represents a rational number (fraction) with a numerator and
+ * denominator.
+ * Provides methods for accessing components and simplifying fractions using the
+ * Greatest Common Divisor (GCD) algorithm.
+ * 
+ * @author University Assignment
+ * @version 1.0
+ */
 public class Rational {
-	private int num = 0;
-	private int den = 0;
+	private int numerator = 0;
+	private int denominator = 0;
 
-	public Rational(int x, int y) {
-		if (y == 0) {
+	/**
+	 * Constructs a new Rational number.
+	 * 
+	 * @param numerator   The numerator (top part of the fraction)
+	 * @param denominator The denominator (bottom part of the fraction)
+	 *                    Cannot be zero; if zero is provided, defaults to 1
+	 */
+	public Rational(int numerator, int denominator) {
+		if (denominator == 0) {
 			System.out.println("Unable to enter value 0");
-			y = 1;
+			denominator = 1;
 		}
-		this.den = y;
-		this.num = x;
-
+		this.denominator = denominator;
+		this.numerator = numerator;
 	}
 
-	public void setDenominator(int i) {
-		this.den = i;
+	/**
+	 * Sets the denominator value.
+	 * 
+	 * @param denominator New denominator value
+	 */
+	public void setDenominator(int denominator) {
+		this.denominator = denominator;
 	}
 
+	/**
+	 * Gets the current denominator value.
+	 * 
+	 * @return The denominator
+	 */
 	public int getDenominator() {
-		return den;
+		return denominator;
 	}
 
-	public void setNumerator(int i) {
-		this.num = i;
-
+	/**
+	 * Sets the numerator value.
+	 * 
+	 * @param numerator New numerator value
+	 */
+	public void setNumerator(int numerator) {
+		this.numerator = numerator;
 	}
 
-	public int getNumerator(int i) {
-		return num;
+	/**
+	 * Gets the current numerator value.
+	 * 
+	 * @return The numerator
+	 */
+	public int getNumerator() {
+		return numerator;
 	}
 
+	/**
+	 * Returns a string representation of the rational number.
+	 * 
+	 * @return String in the format "numerator/denominator"
+	 */
 	@Override
 	public String toString() {
-		return this.num + "/" + this.den;
+		return this.numerator + "/" + this.denominator;
 	}
 
+	/**
+	 * Calculates the Greatest Common Divisor (GCD) using Euclidean algorithm.
+	 * 
+	 * Uses recursive approach: gcd(a, b) = gcd(b, a mod b) until b = 0
+	 * 
+	 * @param a First number
+	 * @param b Second number
+	 * @return The GCD of a and b
+	 */
 	public int gcd(int a, int b) {
 		return b == 0 ? a : gcd(b, a % b);
 	}
 
-	public String Fraction() {
-		int a = this.num;
-		int b = this.den;
-		int gcd = gcd(a, b);
-		return (a / gcd) + "/" + (b / gcd);
+	/**
+	 * Returns the simplified (reduced) form of this rational number.
+	 * 
+	 * Divides both numerator and denominator by their GCD to get
+	 * the fraction in lowest terms.
+	 * 
+	 * @return String representation of the simplified fraction
+	 *         "numerator/denominator"
+	 */
+	public String toSimplifiedString() {
+		int num = this.numerator;
+		int den = this.denominator;
+		int commonDivisor = gcd(num, den);
+		return (num / commonDivisor) + "/" + (den / commonDivisor);
 	}
-
 }

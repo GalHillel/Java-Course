@@ -1,54 +1,76 @@
 package EX2;
 
+/**
+ * Assignment 2: Image Processing Demonstration
+ * 
+ * This class demonstrates various image processing operations including:
+ * - 90-degree rotation
+ * - Smoothing (blur filter)
+ * - RGB to grayscale conversion
+ * - Image scaling (both up and down)
+ * 
+ * @author University Assignment
+ * @version 1.0
+ */
 public class Main {
 
+	/**
+	 * Main method that executes all image processing demonstrations.
+	 * Reads a source image and applies various transformations, saving
+	 * each result to a separate output file.
+	 * 
+	 * @param args Command line arguments (not used)
+	 */
 	public static void main(String[] args) {
 
 		System.out.println("start");
 
-		int[][][] myImage = MyImageIO.readImageFromFile("C:\\42104.jpg");
+		// Load source image
+		int[][][] sourceImage = MyImageIO.readImageFromFile("C:\\42104.jpg");
 
-		// rotate90
+		// ========== Rotate 90 Degrees ==========
 		try {
-			int[][][] rotate90 = EX2.rotate90.rotate(myImage);
-			MyImageIO.writeImageToFile("rotate90.jpg", rotate90);
+			int[][][] rotatedImage = EX2.Rotate90.rotate(sourceImage);
+			MyImageIO.writeImageToFile("rotate90", rotatedImage);
 		} catch (Exception e) {
-			System.out.println("rotate 90");
+			System.out.println("Error during rotation:");
 			e.printStackTrace();
 		}
 
-		// Smooth
+		// ========== Apply Smoothing Filter ==========
 		try {
-			int[][][] smooth = EX2.smooth.Smooth(myImage, 10);
-			MyImageIO.writeImageToFile("smooth.jpg", smooth);
+			int[][][] smoothedImage = EX2.SmoothImage.applySmoothing(sourceImage, 10);
+			MyImageIO.writeImageToFile("smooth", smoothedImage);
 		} catch (Exception e) {
-			System.out.println("Smooth");
+			System.out.println("Error during smoothing:");
 			e.printStackTrace();
 		}
 
-		// rgb2gray
+		// ========== Convert to Grayscale ==========
 		int[][] grayImage = null;
 		try {
-			grayImage = EX2.rgb2gray.grayscale(myImage);
-			MyImageIO.writeImageToFile("grayImage.jpg", grayImage);
+			grayImage = EX2.RgbToGray.grayscale(sourceImage);
+			MyImageIO.writeImageToFile("grayImage", grayImage);
 		} catch (Exception e) {
-			System.out.println("rgb2gray");
-			e.printStackTrace();
-		}
-		// scale
-		try {
-			int[][] scalledUpImage = EX2.scaleup.scale(2, 2, grayImage);
-			MyImageIO.writeImageToFile("scalledUpImage.jpg", scalledUpImage);
-		} catch (Exception e) {
-			System.out.println("scale up");
+			System.out.println("Error during grayscale conversion:");
 			e.printStackTrace();
 		}
 
+		// ========== Scale Up Image ==========
 		try {
-			int[][] scalledDownImage = EX2.scaleup.scale(1, 4.3, grayImage);
-			MyImageIO.writeImageToFile("scalledDownImage.jpg", scalledDownImage);
+			int[][] scaledUpImage = EX2.ScaleImage.scale(2, 2, grayImage);
+			MyImageIO.writeImageToFile("scalledUpImage", scaledUpImage);
 		} catch (Exception e) {
-			System.out.println("scale down");
+			System.out.println("Error during scale up:");
+			e.printStackTrace();
+		}
+
+		// ========== Scale Down Image ==========
+		try {
+			int[][] scaledDownImage = EX2.ScaleImage.scale(1, 4.3, grayImage);
+			MyImageIO.writeImageToFile("scalledDownImage", scaledDownImage);
+		} catch (Exception e) {
+			System.out.println("Error during scale down:");
 			e.printStackTrace();
 		}
 
